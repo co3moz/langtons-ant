@@ -1,0 +1,40 @@
+<style>
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+    background-color: black;
+  }
+
+
+
+  #world {
+    border: 1px solid white;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    position: fixed;
+    background: white;
+    width: 100%;
+    height: 100%;
+
+    image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: -o-crisp-edges;
+    image-rendering: pixelated;
+    -ms-interpolation-mode: nearest-neighbor;
+  }
+
+
+  button {
+    position: relative;
+    z-index: 999;
+  }
+</style>
+<button onclick="faster()">GO</button>
+<button onclick="stopc()">STOP</button>
+<canvas id="world">
+</canvas>
+
+<script src="langtons.js"></script>
