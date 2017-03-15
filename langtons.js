@@ -1,33 +1,32 @@
+var how = document.getElementById("how");
 var world = document.getElementById("world");
 var ctx = world.getContext('2d');
-var width = world.width = 250;
-var height = world.height = 250;
-ctx.fillStyle = "white";
-ctx.fillRect(0, 0, width, height);
+var width = world.width = 500;
+var height = world.height = 500;
 var iteration = 0;
 var position = {
     x: width / 2,
     y: height / 2
 };
-var rules = [
-    {
-        name: "black",
-        replace: "white",
-        move: "left",
-        color: [0, 0, 0]
-    }, {
-        name: "white",
-        move: "right",
-        replace: "black",
-        color: [255, 255, 255]
-    }
-    // }, {
-    //   name: "red",
-    //   move: "left",
-    //   replace: "black",
-    //   color: [255, 0, 0]
-    // }
-];
+
+function ruleGenerator(str) {
+    var rules = [];
+
+    var l = str.length - 1;
+    str.split('').forEach(function (k, i) {
+        rules.push({
+            name: "r_" + i,
+            move: k == 'L' ? 'left' : 'right',
+            replace: l == i ? ("r_0") : ("r_" + (i + 1)),
+            color: [Math.random() * 255 >> 0, Math.random() * 255 >> 0, Math.random() * 255 >> 0]
+        });
+    });
+
+    return rules;
+}
+
+var rules;
+
 var stop = 0;
 function readPixel() {
     return ctx.getImageData(position.x, position.y, 1, 1).data;
@@ -95,19 +94,38 @@ function move(rule) {
             position.y += 1;
         }
     }
+
+
 }
-for (var i = 0; i < 50; i++) {
-    requestAnimationFrame(life);
-}
+
 function faster() {
     for (var i = 0; i < 50; i++) {
         requestAnimationFrame(life);
     }
 }
-function stopc() {
+
+function stopc(fn) {
     stop = 1;
     setTimeout(function () {
         stop = 0;
+        if (fn) fn();
     }, 200);
 }
-console.log("life");
+
+function start(w, h) {
+    width = world.width = w || 1000;
+    height = world.height = h || 1000;
+
+    iteration = 0;
+    position = {
+        x: width / 2,
+        y: height / 2
+    };
+
+    rules = ruleGenerator(how.value);
+    ctx.fillStyle = "rgb(" + rules[0].color[0] + ", " + rules[0].color[1] + ", " + rules[0].color[2] + ")";
+    ctx.fillRect(0, 0, width, height);
+
+
+    requestAnimationFrame(life);
+}
